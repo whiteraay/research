@@ -1,0 +1,12 @@
+*.egg-info/
+.env
+.pytest_cache/
+.venv/
+__pycache__/
+cache/
+data/
+examples/toy/
+outputs/
+results/
+runs/
+scripts/haarcascade_frontalface_default.xml

@@ -1,0 +1,6 @@
+Session ID: {session_id}
+Input condition: {condition}
+
+{payload}
+
+Rate this session now. Respond with the JSON object only.

@@ -1,0 +1,14 @@
+Here are {n_examples} labelled example sessions from a separate calibration set, in the same input condition. Each is followed by its clinician label.
+
+{examples}
+
+---
+
+Now rate the following session.
+
+Session ID: {session_id}
+Input condition: {condition}
+
+{payload}
+
+Respond with the JSON object only.

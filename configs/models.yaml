@@ -1,0 +1,46 @@
+# Model families under test. Pin an exact version before pre-registration and
+# never change it mid-study: the version string is logged with every run.
+#
+# `supports` lists which input conditions the provider API can take natively.
+#   raw_media     : video and/or audio file sent directly to the model
+#   feature_sheet : text-only sheet (AU summaries, eGeMAPS, latency, transcript)
+#   transcript    : transcript only
+# Every model must support feature_sheet and transcript; raw_media is optional
+# and the harness skips it where it is not supported (logged as "unsupported").
+
+temperature: 0.0
+max_output_tokens: 600
+repeats: 5                   # test-retest runs per (model, session, condition, prompt)
+
+models:
+  gemini:
+    provider: gemini
+    model_id: "gemini-2.5-pro"           # VERIFY against https://ai.google.dev/gemini-api/docs/models before locking
+    supports: [raw_media, feature_sheet, transcript]
+    raw_media_kind: video                # sends the session video (audio included)
+
+  claude:
+    provider: anthropic
+    model_id: "claude-opus-5-5"          # from platform.claude.com/docs/en/claude_api_primer (Nov 2026); re-verify before locking
+    supports: [raw_media, feature_sheet, transcript]
+    raw_media_kind: frames               # Claude takes images: we send sampled frames + transcript, no audio
+
+  gpt:
+    provider: openai
+    model_id: "gpt-4o"                   # VERIFY against https://platform.openai.com/docs/models before locking
+    supports: [raw_media, feature_sheet, transcript]
+    raw_media_kind: frames               # same frame-sampling path as Claude for parity
+
+  mock:
+    provider: mock
+    model_id: "mock-v0"
+    supports: [raw_media, feature_sheet, transcript]
+    raw_media_kind: frames
+
+conditions: [raw_media, feature_sheet, transcript]
+prompt_modes: [zero_shot, few_shot]
+
+# Frame sampling used for the `frames` raw-media kind
+frames:
+  per_task: 8          # evenly spaced frames per task segment
+  max_side_px: 768

@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "apd-bench"
+version = "0.4.0"
+description = "Benchmark of frontier multimodal models (Gemini, Claude, GPT) as assessors of acute psychological distress risk on synthetic vs. behavioral session recordings."
+requires-python = ">=3.10"
+dependencies = [
+    "numpy>=1.26",
+    "pandas>=2.1",
+    "scipy>=1.11",
+    "scikit-learn>=1.4",
+    "pyyaml>=6.0",
+    "pydantic>=2.5",
+    "typer>=0.12",
+    "tqdm>=4.66",
+]
+
+[project.optional-dependencies]
+# Model-provider SDKs. Install only the ones you have keys for.
+anthropic = ["anthropic>=0.40"]
+openai = ["openai>=1.50"]
+gemini = ["google-genai>=1.0"]
+# Feature extraction. OpenFace is a separate binary (FeatureExtraction); we parse its CSV.
+features = ["opensmile>=2.5", "librosa>=0.10", "soundfile>=0.12", "openai-whisper"]
+dev = ["pytest>=8.0"]
+
+[project.scripts]
+apd-bench = "apd_bench.cli:app"
+
+[tool.setuptools.packages.find]
+where = ["src"]
